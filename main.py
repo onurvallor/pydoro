@@ -3,15 +3,18 @@ import tkinter.ttk as ttk
 from tkinter import *
 from tkinter.ttk import *
 from ttkthemes import ThemedStyle
+from tkinter import messagebox
 
-window_width = 500
-window_height = 700
+import time
+from datetime import date
+import pandas as pd
 
-window_width_calc = window_width / 3
 
-class HelloWorld(ttk.Frame):
+# df = pd.read_csv("examples.csv",)
+
+class PyDoro(ttk.Frame):
     def __init__(self, parent):
-        super(HelloWorld, self).__init__(parent)
+        super(PyDoro, self).__init__(parent)
 
         timer_var = tk.IntVar()
         timer_var.set(30)
@@ -25,23 +28,40 @@ class HelloWorld(ttk.Frame):
         minute.set("30")
         second.set("00")
 
+        # https://www.geeksforgeeks.org/create-countdown-timer-using-python-tkinter/
         def start_timer():
-            pass
+            try:
+                temp = int(hour.get()) * 3600 + int(minute.get()) * 60 + int(second.get())
+                print(temp)
+            except:
+                print("Enter in correct values.")
 
-        def set_timer():
-            #self.label['text'] = str(int(self.time_slider.get())) + ":00"
-            print(hour_entry.get())
-            hour.set(hour_entry.get())
-            print(hour.get())
-            minute.set(minute_entry.get())
-            second.set(second_entry.get())
-            pass
+            while temp > -1:
+                m, s = divmod(temp, 60)
 
-        
-        #self.label = Label(self, textvariable=m, width=3, font=("Arial Bold", 50))
-        #self.label.pack(padx=25,pady=10)
+                h = 0
+                if m > 60:
+                    h, m = divmod(m, 60)
+
+                hour.set("{0:2d}".format(h))
+                minute.set("{0:2d}".format(m))
+                second.set("{0:2d}".format(s))
+
+                root.update()
+                time.sleep(1)
+
+                if temp == 0:
+                    root.bell()
+                    messagebox.showinfo("PyDoro", "Time is up!")
+                
+                temp -= 1
+
+        # def test():
+        #     d1 = date.today().strftime("%m-%d-%Y")
+        #     year = d1 - date.timedelta(days=1*365)
+        #     print(d1)
+        #     print(year)
   
-
         hour_entry = Entry(self, width=3, font=("Arial", 16, ""), textvariable=hour)
         hour_entry.grid(column=0, row=0, padx=(5,5))
         minute_entry = Entry(self, width=3, font=("Arial", 16, ""), textvariable=minute)
@@ -49,21 +69,9 @@ class HelloWorld(ttk.Frame):
         second_entry = Entry(self, width=3, font=("Arial", 16, ""), textvariable=second)
         second_entry.grid(column=2, row=0, padx=(5,5))
 
-        self.set_btn = Button(self, text='set', width = 5, command=set_timer).grid(row=1, column=0, columnspan=3, sticky=E+W+N+S)
-        self.start_btn = Button(self, text='start', width = 5).grid(row=2, column=0, columnspan=3, sticky=E+W+N+S)
-        
+        self.start_btn = Button(self, text='start', width = 5, command=start_timer).grid(row=2, column=0, columnspan=3, sticky=E+W+N+S)
 
-        # self.start_btn.pack(padx=2, pady=2)
-
-        #self.time_slider = Scale(self, from_=0, to=60, variable=timer_var,orient=HORIZONTAL)
-        #self.time_slider.pack()
-
-        # self.time_slider_btn = Button(self, text='Set', command=set_timer)
-        # self.time_slider_btn.pack()
-
-        
-
-
+        # self.test_btn = Button(self, text='test', width = 5, command=test).grid(row=3, column=0, columnspan=3, sticky=E+W+N+S)
         
 
 if __name__ == "__main__":
@@ -75,11 +83,7 @@ if __name__ == "__main__":
     style.set_theme("yaru")
 
 
-    main = HelloWorld(root)
-
-    # main.grid(sticky="nsew")
-    # root.grid_rowconfigure(0, weight=1)
-    # root.grid_columnconfigure(0, weight=1)
+    main = PyDoro(root)
 
     main.pack(fill="both", expand=True)
     root.mainloop()
