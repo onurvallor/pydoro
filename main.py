@@ -72,7 +72,8 @@ class PyDoro(ttk.Frame):
         self.start_btn = Button(self, text='start', width = 5, command=start_timer).grid(row=2, column=0, columnspan=3, sticky=E+W+N+S)
 
         # self.test_btn = Button(self, text='test', width = 5, command=test).grid(row=3, column=0, columnspan=3, sticky=E+W+N+S)
-        
+
+
 
 if __name__ == "__main__":
     root = tk.Tk()
